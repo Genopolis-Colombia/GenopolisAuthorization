@@ -1,0 +1,39 @@
+plugins {
+    id 'org.springframework.boot' version '3.2.4'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+subprojects {
+    apply plugin: 'java'
+    sourceCompatibility = '17'
+
+    repositories {
+        mavenCentral()
+    }
+
+    group = 'org.gpc.auth'
+    version = '1.0-SNAPSHOT'
+
+    dependencies {
+        testImplementation platform('org.junit:junit-bom:5.9.1')
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+
+        compileOnly 'org.projectlombok:lombok:1.18.32'
+        annotationProcessor 'org.projectlombok:lombok:1.18.32'
+
+    }
+
+    test {
+        useJUnitPlatform()
+        systemProperty "org.testcontainers.dockerclient.api.version", "1.44"
+        systemProperty "api.version", "1.44"
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}
+
+springBoot {
+    mainClass = 'org.gpc.template.Application'
+}
