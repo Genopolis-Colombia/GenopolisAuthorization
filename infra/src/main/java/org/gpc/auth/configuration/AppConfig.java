@@ -3,7 +3,6 @@ package org.gpc.auth.configuration;
 import org.gpc.auth.adapters.out.mysql.MysqlUserRepositoryImpl;
 import org.gpc.auth.adapters.out.mysql.UserRepository;
 import org.gpc.auth.handlers.*;
-//import org.gpc.auth.handlers.UpdateUserHandler;
 import org.gpc.auth.port.RepositoryPort;
 import org.gpc.auth.services.BCryptPasswordHasherService;
 import org.gpc.auth.services.JwtService;

@@ -21,6 +21,8 @@ public class LoginUserUseCaseImpl {
 
     public Optional<String> execute(LoginUser loginUser) throws InvalidCredentialsException {
         Optional<User> maybeUser = repositoryPort.findByUsername(loginUser.username());
+        if(maybeUser.isEmpty())
+            maybeUser = repositoryPort.findByEmail(loginUser.username());
         if (maybeUser.isEmpty())
             return Optional.empty();
         else {
