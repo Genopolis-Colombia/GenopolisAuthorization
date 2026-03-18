@@ -5,7 +5,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.gpc.auth.configuration.JwtProperties;
 import org.gpc.auth.error.InvalidTokenException;
 import org.slf4j.Logger;
@@ -100,13 +99,14 @@ public class JwtServiceImpl implements JwtService {
     public String verify(String token) throws InvalidTokenException {
         try {
             return verifier.verify(token).getSubject();
-        } catch (TokenExpiredException ex) {
-            logger.error("Token expired");
-            throw new InvalidTokenException("The provided token has expired");
         } catch (SignatureVerificationException ex) {
             logger.error("Invalid token signature");
             throw new InvalidTokenException("The provided token has an invalid signature");
         } catch (JWTVerificationException e) {
+            if (e.getMessage() != null && e.getMessage().toLowerCase().contains("expired")) {
+                logger.error("Token expired");
+                throw new InvalidTokenException("The provided token has expired");
+            }
             logger.error("Token invalid");
             throw new InvalidTokenException("The provided token is not valid");
         }
